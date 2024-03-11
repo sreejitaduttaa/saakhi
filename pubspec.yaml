@@ -39,6 +39,8 @@ dependencies:
   flutter_phone_direct_caller:
   easy_search_bar:
   webview_flutter:
+  shake:
+  flutter_sms:
 
 
 dev_dependencies:

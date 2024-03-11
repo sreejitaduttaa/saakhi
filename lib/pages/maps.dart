@@ -91,10 +91,9 @@ class _MapsState extends State<Maps> {
 
         body: Stack(
           children: [
-
             //map
             WebViewWidget(controller: controller1), //Sohel map
-            Opacity(child: WebViewWidget(controller: controller),opacity: 0.5,),  //gmap
+            // Opacity(child: WebViewWidget(controller: controller),opacity: 0.6,),  //gmap
 
 
 
