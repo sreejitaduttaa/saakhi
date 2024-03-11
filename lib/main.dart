@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: "Saakhi",
       debugShowCheckedModeBanner: false,
       home: SafeArea(child: Dashboard()),
+
     );
   }
 }

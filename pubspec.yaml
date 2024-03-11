@@ -38,7 +38,8 @@ dependencies:
   google_fonts:
   flutter_phone_direct_caller:
   easy_search_bar:
-  badges:
+  webview_flutter:
+
 
 dev_dependencies:
   flutter_test:
