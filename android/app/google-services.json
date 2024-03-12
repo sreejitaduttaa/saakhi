@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "655243800459",
+    "project_id": "saakhi-bd756",
+    "storage_bucket": "saakhi-bd756.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655243800459:android:111d06bb48d5f591da498e",
+        "android_client_info": {
+          "package_name": "com.saakhi.saakhi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr99jdsywaYM8uLwPM4lWaPgxEXHdvGXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

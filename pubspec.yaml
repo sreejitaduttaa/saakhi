@@ -37,10 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts:
   flutter_phone_direct_caller:
-  easy_search_bar:
   webview_flutter:
   shake:
   flutter_sms:
+#  firebase_core:
+#  cloud_firestore:
 
 
 dev_dependencies:

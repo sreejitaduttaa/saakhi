@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class ContactDetails{
   String username;
   String password;
@@ -11,7 +12,7 @@ class ContactDetails{
     required this.password,
     required this.email,
     required this.contact,
-  })
+  });
 
 }
 

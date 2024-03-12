@@ -33,7 +33,64 @@ class _DashboardState extends State<Dashboard> {
   final String msg = "DANGER! \n https://location-three-flax.vercel.app/";
 
   void _sendSMS(String message, List<String> recipents) async {
-    sendSMS(message: message, recipients: recipents,sendDirect: true);
+    sendSMS(message: message, recipients: recipents, sendDirect: true);
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        showCloseIcon: true,
+        closeIconColor: Colors.black87,
+        content: Container(
+          height: 90,
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ImageIcon(
+                AssetImage("assets/icons/confirm.png"),
+                size: 30,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Succesful!",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
+                    Text(
+                      message,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+    );
   }
 
   void _incrementCounter() {
@@ -41,24 +98,28 @@ class _DashboardState extends State<Dashboard> {
     if (currentTab == 2) {
       setState(() {
         emergencyCount++;
-        countFeatures(emergencyCount);
+
+        _countFeatures(emergencyCount);
       });
     } else {
       setState(() {
-        emergencyCount++;
+        // emergencyCount++;
         currentScreen = const Maps();
         currentTab = 2;
-        countFeatures(emergencyCount);
+        // _countFeatures(emergencyCount);
       });
     }
   }
 
-  void countFeatures(int emergencyCount ){
+  void _countFeatures(int emergencyCount) {
     if (emergencyCount == 1) {
       _sendSMS(msg, contacts);
+      _showSnackBar("Location sent to guardians!");
     } else if (emergencyCount == 2) {
-    } else if (emergencyCount == 3) {}
-
+      _showSnackBar("Location sent to police main server!");
+    } else if (emergencyCount == 3) {
+      _showSnackBar("Location sent to police local server, TO YOUR HELP!");
+    }
   }
 
   @override
