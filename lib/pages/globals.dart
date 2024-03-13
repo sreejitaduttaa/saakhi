@@ -17,7 +17,7 @@ class ContactDetails{
 }
 
 class EmergencyContact {
-  final List<String> _contacts = ['1234567890','2345567563'];
+  final List<String> _contacts = ['9007614799','9748886527'];
 
   void addContacts(String contact) {
     _contacts.add(contact);

@@ -1,17 +1,26 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:saakhi/pages/globals.dart';
 import 'package:shake/shake.dart';
-// import 'package:badges/badges.dart';
 import 'constants.dart';
 import 'pages/home.dart';
 import 'pages/chat.dart';
 import 'pages/maps.dart';
 import 'pages/settings.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:background_sms/background_sms.dart';
 
 int currentTab = 0;
 Widget currentScreen = Home();
 int emergencyCount = 0;
+int shakeCount = 0;
+bool isRecording = false;
+bool isAudioRecording = false;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -30,10 +39,109 @@ class _DashboardState extends State<Dashboard> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   final List<String> contacts = EmergencyContact().getContacts();
-  final String msg = "DANGER! \n https://location-three-flax.vercel.app/";
+  final String msg = "DANGER! \nhttps://emerngency-location.vercel.app/";
+  late CameraController controller;
+  late String videoPath;
+  late List<CameraDescription> cameras;
+
+  final recorder = FlutterSoundRecorder();
+  bool isRecorderReady = false;
+
+  Future<void> initializeCamera() async {
+    cameras = await availableCameras();
+    final camera = cameras.first;
+    controller = CameraController(
+      camera,
+      ResolutionPreset.medium,
+    );
+    await controller.initialize();
+  }
+
+  void _startRecording() async {
+    if (controller != null &&
+        controller.value.isInitialized &&
+        !controller.value.isRecordingVideo) {
+      final videoPath = await controller.startVideoRecording();
+
+        isRecording = true;
+
+
+      // Start recording video
+    }
+  }
+
+  void _stopRecording() async {
+    if (controller != null && controller.value.isRecordingVideo) {
+      final videoPath = await controller.stopVideoRecording();
+
+      await GallerySaver.saveVideo(videoPath.path);
+      File(videoPath.path).deleteSync();
+      setState(() {
+        isRecording = false;
+      });
+      // Process the recorded video
+    }
+  }
+
+  void _videoRecording() {
+    _startRecording();
+    Future.delayed(Duration(seconds: 6), () {
+      _stopRecording();
+    });
+  }
+
+  Future initRecorder() async {
+    final status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw 'Microphone permission not granted';
+    }
+
+    await recorder.openRecorder();
+    isRecorderReady = true;
+  }
+
+  Future record() async {
+    if (!isRecorderReady) return;
+    await recorder.startRecorder(toFile: 'audio');
+
+
+    setState(() {
+      isAudioRecording = true;
+    });
+  }
+
+  Future stop() async {
+    if (!isRecorderReady) return;
+
+    final path = await recorder.stopRecorder();
+    isAudioRecording = false;
+
+    final audioFile = File(path!);
+    print('Recorded audio: $audioFile');
+  }
+
+  void _audioRecording() {
+    record();
+    Future.delayed(Duration(seconds: 6), () {
+      stop();
+    });
+  }
 
   void _sendSMS(String message, List<String> recipents) async {
     sendSMS(message: message, recipients: recipents, sendDirect: true);
+  }
+
+  void _sendBackgroundSMS(String message, List<String> recipents) async {
+    Future<bool> _isPermissionGranted() async =>
+        await Permission.sms.status.isGranted;
+    for (var i = 0; i < recipents.length; i++)
+    // void _sendMessage(String phoneNumber, String message) async {
+    {
+      var result = await BackgroundSms.sendMessage(
+          phoneNumber: recipents[i], message: message);
+      print("Message sent");
+    }
+    // }
   }
 
   void _showSnackBar(String message) {
@@ -119,10 +227,55 @@ class _DashboardState extends State<Dashboard> {
       _showSnackBar("Location sent to police main server!");
     } else if (emergencyCount == 3) {
       _showSnackBar("Location sent to police local server, TO YOUR HELP!");
+
+      _videoRecording();
+      _audioRecording();
+    }
+  }
+
+  void _shakeFeatures(int shakeCount) {
+    if (shakeCount == 1) {
+      _sendBackgroundSMS(msg, contacts);
+      _showSnackBar("Location sent to guardians!");
+    } else if (shakeCount == 2) {
+      _showSnackBar("Location sent to police main server!");
+    } else if (shakeCount == 3) {
+      _showSnackBar("Location sent to police local server, TO YOUR HELP!");
+
+      // _videoRecording();
+      // _audioRecording();
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    initializeCamera();
+    initRecorder();
+    // Permission.sms.request();
+
+    _getPermission() async => await [
+          Permission.sms,
+        ].request();
+
+    ShakeDetector detector = ShakeDetector.autoStart(
+      onPhoneShake: () {
+        setState(() {
+          shakeCount++;
+          emergencyCount++;
+          _shakeFeatures(shakeCount);
+        });
+      },
+      minimumShakeCount: 1,
+      shakeSlopTimeMS: 1000,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
+    // To close: detector.stopListening();
+    // ShakeDetector.waitForStart() waits for user to call detector.startListening();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageStorage(

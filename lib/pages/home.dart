@@ -4,6 +4,7 @@ import 'package:saakhi/models/helpline.dart';
 
 import '../constants.dart';
 import '../home_widgets/helpline_tile.dart';
+import 'globals.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<HelplineModel> helplines = [];
+  final List<String> contacts = EmergencyContact().getContacts();
 
   void _getInitialInfo() {
     helplines = HelplineModel.getHelplines();
@@ -54,7 +56,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Text(
-                    "Emergency",
+                    "Emergency Helplines",
                     textAlign: TextAlign.left,
                     style: GoogleFonts.radioCanada(
                       fontSize: 24,
@@ -63,7 +65,6 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-
                 Container(
                   height: 240,
                   child: ListView.separated(
@@ -95,9 +96,81 @@ class _HomeState extends State<Home> {
               ),
             ),
 
-
-
-
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Color(0xff82C0D3),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              height: 120,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // left title
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Guardians",
+                          style: GoogleFonts.radioCanada(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        Text(
+                          "${contacts.length}/5",
+                          style: GoogleFonts.radioCanada(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //circular avatar
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    
+                    children: [
+                      Row(
+                        children: [
+                          for (int i = 0; i < contacts.length; i++)
+                            Align(
+                              widthFactor: 0.5,
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundColor: Color(0xff82C0D3),
+                                child: CircleAvatar(
+                                  radius: 22,
+                                  backgroundImage:
+                                      AssetImage("assets/icons/user.png"),
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                      SizedBox(width: 10,),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
 
             //3rd box
           ],
@@ -140,7 +213,7 @@ class _headingSection extends StatelessWidget {
           height: 10,
         ),
         Text(
-          "Market go move, no worry",
+          "Hope you've a good day!",
           textAlign: TextAlign.center,
           style: GoogleFonts.comfortaa(
             fontSize: 12,

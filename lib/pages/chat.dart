@@ -14,8 +14,9 @@ class _ChatState extends State<Chat> {
       backgroundColor: Colors.purple[100],
       body: Center(
         child: Text(
-          "Chat",
-          style: TextStyle(fontSize: 40),
+          "Your Companion - Devi \n(Yet to be implemented!)",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 35),
         ),
       ),
     );

@@ -14,8 +14,9 @@ class _SettingsState extends State<Settings> {
       backgroundColor: Colors.purple[100],
       body: Center(
         child: Text(
-          "Settings",
-          style: TextStyle(fontSize: 40),
+          "Settings \n(Yet to be implemented!)",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 35),
         ),
       ),
     );

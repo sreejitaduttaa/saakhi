@@ -40,6 +40,19 @@ dependencies:
   webview_flutter:
   shake:
   flutter_sms:
+  camera:
+  async:
+  gallery_saver:
+  flutter_sound:
+  permission_handler:
+  background_sms:
+  #  telephony:
+#  flutter_background_service:
+#  flutter_background_service_android:
+#  flutter_background_service_ios:
+#  flutter_local_notifications:
+
+
 #  firebase_core:
 #  cloud_firestore:
 

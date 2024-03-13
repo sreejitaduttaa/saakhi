@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saakhi/dashboard.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Maps extends StatefulWidget {
@@ -18,7 +19,7 @@ class _MapsState extends State<Maps> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title:  const Text('Maps'),
+        title: const Text('Maps'),
         titleTextStyle: const TextStyle(
           color: Colors.black87,
           fontWeight: FontWeight.w500,
@@ -28,34 +29,46 @@ class _MapsState extends State<Maps> {
         backgroundColor: Colors.white,
         actions: [
           //mic
-          Badge(
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.mic,
-                color: Colors.grey[700],
+          Container(
+            margin: const EdgeInsets.all(15),
+            child: Badge(
+              isLabelVisible: isAudioRecording ? true : false,
+              largeSize: 20, //height
+              smallSize: 10,
+              alignment: const AlignmentDirectional(0, 0),
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.mic,
+                  size: 25,
+                  color: Colors.grey[700],
+                ),
               ),
             ),
           ),
           //camera
-          Badge(
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.videocam_rounded,
-                color: Colors.grey[700],
+          Container(
+            margin: const EdgeInsets.only(top: 15, right: 15),
+            child: Badge(
+              isLabelVisible: isRecording ? true : false,
+              child: IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.videocam_rounded,
+                  size: 25,
+                  color: Colors.grey[700],
+                ),
               ),
             ),
           ),
           //rotate
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.flip_camera_android_outlined,
-              color: Colors.grey[700],
-            ),
-          ),
-
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: Icon(
+          //     Icons.flip_camera_android_outlined,
+          //     color: Colors.grey[700],
+          //   ),
+          // ),
         ],
       ),
       body: Stack(
